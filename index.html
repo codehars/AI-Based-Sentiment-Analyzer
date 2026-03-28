@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sentiment Analyzer</title>
+</head>
+<body>
+
+    <h2>AI Sentiment Analyzer</h2>
+
+    <form id="form">
+        <textarea name="text" id="text" rows="4" cols="50" placeholder="Enter text here..."></textarea><br><br>
+        <button type="submit">Analyze</button>
+    </form>
+
+    <h3>Result:</h3>
+    <p id="result"></p>
+
+    <script>
+        const form = document.getElementById('form');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const text = document.getElementById('text').value;
+
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: 'text=' + encodeURIComponent(text)
+            });
+
+            const data = await response.json();
+
+            document.getElementById('result').innerText =
+                `Sentiment: ${data.sentiment}, Score: ${data.score}`;
+        });
+    </script>
+
+</body>
+</html>
